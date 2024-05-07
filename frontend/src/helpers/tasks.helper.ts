@@ -1,6 +1,6 @@
 import { Task } from "../types";
 
-const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL;
+const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL || "http://localhost:8000/";
 
 export const createTask = async (taskData: Task) => {
     const response = await fetch(`${BASE_URL}tasks/`, {
