@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, TextField, List, ListItem, ListItemText } from "@mui/material";
+import { Box, TextField, List, ListItem } from "@mui/material";
 import TaskView from "../TaskView/TaskView";
 import {
   createTask,

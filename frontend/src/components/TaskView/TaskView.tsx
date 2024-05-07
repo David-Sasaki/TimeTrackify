@@ -2,7 +2,7 @@ import React from "react";
 import { Task } from "../../types";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, TextField, ListItem, ListItemText } from "@mui/material";
+import { Box, TextField, ListItem } from "@mui/material";
 import { CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
