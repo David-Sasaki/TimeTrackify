@@ -55,8 +55,8 @@ const TaskView: React.FC<TaskViewProps> = ({
   };
 
   return (
-    <div>
-      <ListItem key={task.id as string}>
+    <div className="task-container">
+      <ListItem key={task.id as string} className="task-items">
         <TextField
           label="Task Name"
           variant="outlined"
@@ -64,55 +64,62 @@ const TaskView: React.FC<TaskViewProps> = ({
           onChange={(e) => handleTaskChange(task.id as string, e.target.value)}
           onBlur={(_) => handleTaskUpdate(task)}
         />
-        <ListItemText
-          className="list-item-text"
-          disableTypography
-          primary={
-            <Typography variant="body1" color="primary">
-              Total running time: {Math.floor(task.totalTime / 1000)} seconds
-            </Typography>
-          }
-          secondary={
-            <Box>
-              <Typography variant="body2" color="textPrimary">
-                {`Start Time: ${task.startTime}`}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {`End Time: ${task.endTime}`}
-              </Typography>
-            </Box>
-          }
-        />
-        {isTaskRunning() ? (
-          <Button disabled={true}>Start</Button>
-        ) : (
-          <Button variant="outlined" color="primary" onClick={handleStart}>
-            Start
-          </Button>
-        )}
-        {isTaskRunning() === task ? (
-          <Button variant="outlined" color="primary" onClick={handleStop}>
-            Stop
-          </Button>
-        ) : (
-          <Button disabled={true}>Stop</Button>
-        )}
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => handleTaskRemove(task.id as string)}
-        >
-          Delete
-        </Button>
-        {task.isRunning ? (
-          <CircularProgress size={48} />
-        ) : (
-          <CheckCircleIcon
+        <Box className="task-info">
+          <Typography
+            className="task-info-item"
+            variant="body1"
             color="primary"
-            fontSize="large"
-            className={classes.icon}
-          />
-        )}
+          >
+            Total running time: {Math.floor(task.totalTime / 1000)} seconds
+          </Typography>
+          <Typography
+            className="task-info-item"
+            variant="body2"
+            color="textPrimary"
+          >
+            {`Start Time: ${task.startTime}`}
+          </Typography>
+          <Typography
+            className="task-info-item"
+            variant="body2"
+            color="textSecondary"
+          >
+            {`End Time: ${task.endTime}`}
+          </Typography>
+        </Box>
+        <div className="task-actions">
+          {isTaskRunning() ? (
+            <Button disabled={true}>Start</Button>
+          ) : (
+            <Button variant="outlined" color="primary" onClick={handleStart}>
+              Start
+            </Button>
+          )}
+          {isTaskRunning() === task ? (
+            <Button variant="outlined" color="primary" onClick={handleStop}>
+              Stop
+            </Button>
+          ) : (
+            <Button disabled={true}>Stop</Button>
+          )}
+          <Button
+            className="task-action-button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleTaskRemove(task.id as string)}
+          >
+            Delete
+          </Button>
+          {task.isRunning ? (
+            <CircularProgress size={48} />
+          ) : (
+            <CheckCircleIcon
+              color="primary"
+              fontSize="large"
+              className={classes.icon}
+            />
+          )}
+        </div>
       </ListItem>
     </div>
   );

@@ -1,0 +1,34 @@
+.task-container {
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.task-items {
+  gap: 48px;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.task-info-item {
+  margin-bottom: 5px;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-action-button {
+  margin-right: 10px;
+}

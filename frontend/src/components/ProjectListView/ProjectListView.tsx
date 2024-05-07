@@ -36,7 +36,6 @@ const ProjectListView: React.FC = () => {
       startTime: currentDateString,
       endTime: currentDateString,
       totalTime: 0,
-      isRunning: false,
     };
     createProject(newProject)
       .then((newProject) => {
@@ -50,8 +49,13 @@ const ProjectListView: React.FC = () => {
   const updateTitle = (projectId: string, newTitle: string) => {
     const newProjects = projects.map((project) => {
       if (project.id === projectId) {
-        const newProject = project;
-        newProject.title = newTitle;
+        const newProject: Project = {
+          id: project.id,
+          title: newTitle,
+          startTime: project.startTime,
+          endTime: project.endTime,
+          totalTime: project.totalTime,
+        };
         return newProject;
       } else {
         return project;
@@ -91,8 +95,8 @@ const ProjectListView: React.FC = () => {
           startTime: project.startTime,
           endTime: newEndTime,
           totalTime: project.totalTime + duration,
-          isRunning: project.isRunning,
         };
+        saveProject(newProject);
         return newProject;
       } else {
         return project;
@@ -102,19 +106,25 @@ const ProjectListView: React.FC = () => {
   };
 
   return (
-    <Box>
-      <Button variant="contained" onClick={addProject}>
+    <Box className="project-list-container">
+      <Button
+        className="add-project-button"
+        variant="contained"
+        onClick={addProject}
+      >
         Add Project
       </Button>
-      <List>
+      <List className="project-list">
         {projects.map((project) => (
-          <ProjectView
-            project={project}
-            handleTitleChange={updateTitle}
-            handleProjectUpdate={saveProject}
-            handleProjectRemove={removeProject}
-            handleEndTime={updateEndTime}
-          />
+          <li key={project.id} className="project-item">
+            <ProjectView
+              project={project}
+              handleTitleChange={updateTitle}
+              handleProjectUpdate={saveProject}
+              handleProjectRemove={removeProject}
+              handleEndTime={updateEndTime}
+            />
+          </li>
         ))}
       </List>
     </Box>

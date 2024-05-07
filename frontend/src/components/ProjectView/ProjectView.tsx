@@ -5,9 +5,9 @@ import { Box, TextField, List, ListItem, ListItemText } from "@mui/material";
 import TaskView from "../TaskView/TaskView";
 import {
   createTask,
+  readAllTasksByProjectId,
   updateTask,
   deleteTask,
-  readAllTasksByProjectId,
 } from "../../api";
 import { Project, Task } from "../../types";
 import { formattedDateString, parseFormattedDateString } from "../../utils";
@@ -50,8 +50,8 @@ const ProjectView: React.FC<ProjectViewProps> = ({
 
   const addTask = (newTask: Task) => {
     createTask(newTask)
-      .then((newTask) => {
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+      .then((response) => {
+        setTasks((prevTasks) => [...prevTasks, response]);
       })
       .catch((error) => {
         console.error("Error creating task:", error);
@@ -61,8 +61,15 @@ const ProjectView: React.FC<ProjectViewProps> = ({
   const updateName = (taskId: string, newName: string) => {
     const newTasks = tasks.map((task) => {
       if (task.id === taskId) {
-        const newTask = task;
-        newTask.name = newName;
+        const newTask: Task = {
+          id: task.id,
+          projectId: task.projectId,
+          name: newName,
+          startTime: task.startTime,
+          endTime: task.endTime,
+          totalTime: task.totalTime,
+          isRunning: task.isRunning,
+        };
         return newTask;
       } else {
         return task;
@@ -104,6 +111,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           totalTime: task.totalTime + duration,
           isRunning: false,
         };
+        saveTask(newTask);
         return newTask;
       } else {
         return task;
@@ -148,8 +156,8 @@ const ProjectView: React.FC<ProjectViewProps> = ({
   };
 
   return (
-    <div>
-      <ListItem className="list-item" key={project.id as string}>
+    <div className="project-container">
+      <ListItem className="list-item">
         <TextField
           className="project-title"
           label="Project Title"
@@ -160,25 +168,29 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           }
           onBlur={(_) => handleProjectUpdate(project)}
         />
-        <ListItemText
-          className="list-item-text"
-          disableTypography
-          primary={
-            <Typography variant="body1" color="primary">
-              Total running time: {Math.floor(project.totalTime / 1000)} seconds
-            </Typography>
-          }
-          secondary={
-            <Box>
-              <Typography variant="body2" color="textPrimary">
-                {`Start Time: ${project.startTime}`}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {`End Time: ${project.endTime}`}
-              </Typography>
-            </Box>
-          }
-        />
+        <Box className="project-info">
+          <Typography
+            className="project-info-item"
+            variant="body1"
+            color="primary"
+          >
+            Total running time: {Math.floor(project.totalTime / 1000)} seconds
+          </Typography>
+          <Typography
+            className="project-info-item"
+            variant="body2"
+            color="textPrimary"
+          >
+            {`Start Time: ${project.startTime}`}
+          </Typography>
+          <Typography
+            className="project-info-item"
+            variant="body2"
+            color="textSecondary"
+          >
+            {`End Time: ${project.endTime}`}
+          </Typography>
+        </Box>
         {getRunningTaskId() ? (
           <Button disabled={true}>Start</Button>
         ) : (
@@ -194,6 +206,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           <Button disabled={true}>Stop</Button>
         )}
         <Button
+          className="project-action-button"
           variant="outlined"
           color="secondary"
           onClick={() => handleProjectRemove(project.id as string)}
@@ -201,17 +214,19 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           Delete
         </Button>
       </ListItem>
-      <List>
+      <List className="task-list">
         {tasks.map((task) => (
-          <TaskView
-            task={task}
-            handleTaskChange={updateName}
-            handleTaskUpdate={saveTask}
-            handleTaskRemove={removeTask}
-            handleTaskStarting={startTask}
-            handleTaskStopping={stopTask}
-            isTaskRunning={getRunningTaskId}
-          />
+          <ListItem key={task.id} className="task-item">
+            <TaskView
+              task={task}
+              handleTaskChange={updateName}
+              handleTaskUpdate={saveTask}
+              handleTaskRemove={removeTask}
+              handleTaskStarting={startTask}
+              handleTaskStopping={stopTask}
+              isTaskRunning={getRunningTaskId}
+            />
+          </ListItem>
         ))}
       </List>
     </div>

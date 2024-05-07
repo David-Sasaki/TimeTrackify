@@ -1,4 +1,5 @@
 export const formattedDateString = (): string => {
+    // Get the current date
     const currentDate = new Date();
 
     // Get the individual components

@@ -4,7 +4,6 @@ export interface Project {
     startTime: string;
     endTime: string;
     totalTime: number;
-    isRunning: boolean;
 }
 
 export interface Task {

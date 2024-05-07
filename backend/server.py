@@ -32,7 +32,6 @@ class Project(BaseModel):
     startTime: str
     endTime: str
     totalTime: int
-    isRunning: bool
 
 @app.post("/projects/", response_model=Project, status_code=status.HTTP_201_CREATED)
 def create_project(project: Project):
