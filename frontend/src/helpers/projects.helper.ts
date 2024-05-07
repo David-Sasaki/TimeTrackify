@@ -1,6 +1,6 @@
 import { Project } from "../types";
 
-const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL;
+const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL || "http://localhost:8000/";
 
 export const createProject = async (projectData: Project) => {
     const response = await fetch(`${BASE_URL}projects/`, {
