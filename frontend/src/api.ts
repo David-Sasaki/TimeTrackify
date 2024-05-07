@@ -1,7 +1,9 @@
 import { Project, Task } from "./types";
 
+const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL;
+
 export async function createProject(projectData: Project) {
-    const response = await fetch('http://localhost:8000/projects/', {
+    const response = await fetch(`${BASE_URL}projects/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -14,16 +16,17 @@ export async function createProject(projectData: Project) {
     return await response.json();
 }
 
-export async function readProject(projectId: string) {
-    const response = await fetch(`http://localhost:8000/projects/${projectId}`);
+export async function readAllProjects(): Promise<Project[]> {
+    const response = await fetch(`${BASE_URL}projects/`);
     if (!response.ok) {
-        throw new Error(`Failed to read project ${projectId}`);
+        throw new Error('Failed to fetch projects');
     }
-    return await response.json();
+    const projects: Project[] = await response.json();
+    return projects;
 }
 
 export async function updateProject(projectId: string, projectData: Project) {
-    const response = await fetch(`http://localhost:8000/projects/${projectId}`, {
+    const response = await fetch(`${BASE_URL}projects/${projectId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +40,7 @@ export async function updateProject(projectId: string, projectData: Project) {
 }
 
 export async function deleteProject(projectId: string) {
-    const response = await fetch(`http://localhost:8000/projects/${projectId}`, {
+    const response = await fetch(`${BASE_URL}projects/${projectId}`, {
         method: 'DELETE',
     });
     if (!response.ok) {
@@ -45,17 +48,8 @@ export async function deleteProject(projectId: string) {
     }
 }
 
-export async function readAllProjects(): Promise<Project[]> {
-    const response = await fetch('http://localhost:8000/projects/');
-    if (!response.ok) {
-        throw new Error('Failed to fetch projects');
-    }
-    const projects: Project[] = await response.json();
-    return projects;
-}
-
 export async function createTask(taskData: Task) {
-    const response = await fetch('http://localhost:8000/tasks/', {
+    const response = await fetch(`${BASE_URL}tasks/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -68,16 +62,17 @@ export async function createTask(taskData: Task) {
     return await response.json();
 }
 
-export async function readTask(taskId: string) {
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`);
+export async function readAllTasksByProjectId(projectId: string): Promise<Task[]> {
+    const response = await fetch(`${BASE_URL}tasks/${projectId}`);
     if (!response.ok) {
-        throw new Error(`Failed to read task ${taskId}`);
+        throw new Error('Failed to fetch tasks');
     }
-    return await response.json();
+    const tasks: Task[] = await response.json();
+    return tasks;
 }
 
 export async function updateTask(taskId: string, taskData: Task) {
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+    const response = await fetch(`${BASE_URL}tasks/${taskId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -91,19 +86,10 @@ export async function updateTask(taskId: string, taskData: Task) {
 }
 
 export async function deleteTask(taskId: string) {
-    const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+    const response = await fetch(`${BASE_URL}tasks/${taskId}`, {
         method: 'DELETE',
     });
     if (!response.ok) {
         throw new Error(`Failed to delete task ${taskId}`);
     }
-}
-
-export async function readAllTasksByProjectId(projectId: string): Promise<Task[]> {
-    const response = await fetch(`http://localhost:8000/project-tasks/${projectId}`);
-    if (!response.ok) {
-        throw new Error('Failed to fetch tasks');
-    }
-    const tasks: Task[] = await response.json();
-    return tasks;
 }
