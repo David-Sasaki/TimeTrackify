@@ -1,0 +1,41 @@
+.task-container {
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.task-items {
+  gap: 48px;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.task-info-item {
+  margin-bottom: 5px;
+}
+
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.task-action-button {
+  margin-right: 10px;
+  gap: 24px;
+}
+
+.check-circle-icon {
+  height: 48px;
+  width: 48px;
+}

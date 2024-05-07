@@ -1,0 +1,37 @@
+.list-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.list-item-text {
+  text-align: center;
+}
+
+.project-title {
+  width: 300px;
+}
+
+.project-list-container {
+  padding: 20px;
+}
+
+.add-project-button {
+  margin-bottom: 20px;
+}
+
+.project-list {
+  list-style: none;
+  padding: 0;
+}
+
+.project-item {
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.project-item:hover {
+  background-color: whitesmoke;
+}

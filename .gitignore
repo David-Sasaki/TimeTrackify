@@ -1,0 +1,12 @@
+# dependencies
+/backend/__pycache__
+/backend/api/__pycache__
+/backend/api/routes/__pycache__
+/backend/db/__pycache__
+/frontend/node_modules
+
+# deployment
+/frontend/.env
+
+# production
+/frontend/build

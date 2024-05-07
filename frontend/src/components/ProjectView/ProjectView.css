@@ -1,0 +1,53 @@
+.list-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.list-item-text {
+  text-align: center;
+}
+
+.project-container {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: whitesmoke;
+}
+
+.project-title {
+  width: 200px;
+  margin-right: 10px;
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.project-info-item {
+  margin-bottom: 5px;
+}
+
+.task-list {
+  padding: 0;
+  list-style: none;
+}
+
+.task-item {
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: white;
+}
+
+.task-item:hover {
+  background-color: whitesmoke;
+}
+
+.task-actions {
+  margin-top: 10px;
+}
