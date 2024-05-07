@@ -1,0 +1,13 @@
+.list-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.list-item-text {
+  text-align: center;
+}
+
+.project-title {
+  width: 300px;
+}

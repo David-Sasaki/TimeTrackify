@@ -1,10 +1,10 @@
 import React from "react";
-import ProjectList from "./components/ProjectList/ProjectList";
+import ProjectListView from "./components/ProjectListView/ProjectListView";
 
 const App: React.FC = () => {
   return (
     <div>
-      <ProjectList />
+      <ProjectListView />
     </div>
   );
 };
