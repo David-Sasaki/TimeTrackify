@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api import routes
+from api.routes import projects, tasks
 
 app = FastAPI()
 
@@ -14,4 +14,5 @@ app.add_middleware(
 )
 
 # Include API routes
-app.include_router(routes.router)
+app.include_router(projects.router, prefix="/projects", tags=["projects"])
+app.include_router(tasks.router, prefix="/tasks", tags=["tasks"])
