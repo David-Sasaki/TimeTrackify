@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { type FC, useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { Box, List } from "@mui/material";
 import ProjectView from "../ProjectView/ProjectView";
@@ -12,7 +12,7 @@ import {
 import { formattedDateString } from "../../utils";
 import "./ProjectListView.css";
 
-const ProjectListView: React.FC = () => {
+const ProjectListView: FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
 
   const getAllProjects = () => {
@@ -21,7 +21,7 @@ const ProjectListView: React.FC = () => {
         setProjects(data);
       })
       .catch((error) => {
-        console.error("Error read all projects:", error);
+        console.error(error);
       });
   };
 
@@ -42,32 +42,27 @@ const ProjectListView: React.FC = () => {
         setProjects((prevProjects) => [...prevProjects, newProject]);
       })
       .catch((error) => {
-        console.error("Error creating project:", error);
+        console.error(error);
       });
   };
 
   const updateTitle = (projectId: string, newTitle: string) => {
-    const newProjects = projects.map((project) => {
-      if (project.id === projectId) {
-        const newProject: Project = {
-          id: project.id,
-          title: newTitle,
-          startTime: project.startTime,
-          endTime: project.endTime,
-          totalTime: project.totalTime,
-        };
-        return newProject;
-      } else {
-        return project;
-      }
-    });
-    setProjects(newProjects);
+    const newProjects = [...projects];
+    const updatedProject = newProjects.find((item) => item.id === projectId);
+    if (updatedProject !== undefined) {
+      updatedProject.title = newTitle;
+      setProjects(newProjects);
+    }
   };
 
   const saveProject = (project: Project) => {
-    updateProject(project.id as string, project).catch((error) => {
-      console.error("Error updating project:", error);
-    });
+    updateProject(project.id || "", project)
+      .then(() => {
+        console.log("Successfully saved!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const removeProject = (projectId: string) => {
@@ -78,7 +73,7 @@ const ProjectListView: React.FC = () => {
         );
       })
       .catch((error) => {
-        console.error("Error deleting project:", error);
+        console.error(error);
       });
   };
 
@@ -87,22 +82,14 @@ const ProjectListView: React.FC = () => {
     newEndTime: string,
     duration: number
   ) => {
-    const newProjects = projects.map((project) => {
-      if (project.id === projectId) {
-        const newProject: Project = {
-          id: project.id,
-          title: project.title,
-          startTime: project.startTime,
-          endTime: newEndTime,
-          totalTime: project.totalTime + duration,
-        };
-        saveProject(newProject);
-        return newProject;
-      } else {
-        return project;
-      }
-    });
-    setProjects(newProjects);
+    const newProjects = [...projects];
+    const updatedProject = newProjects.find((item) => item.id === projectId);
+    if (updatedProject !== undefined) {
+      updatedProject.endTime = newEndTime;
+      updatedProject.totalTime += duration;
+      saveProject(updatedProject);
+      setProjects(newProjects);
+    }
   };
 
   return (

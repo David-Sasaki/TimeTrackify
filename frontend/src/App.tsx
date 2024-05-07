@@ -1,8 +1,8 @@
-import React from "react";
+import { type FC } from "react";
 import ProjectListView from "./components/ProjectListView/ProjectListView";
 import "./App.css";
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
     <div className="app-container">
       <ProjectListView />

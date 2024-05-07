@@ -2,7 +2,7 @@ import { Project } from "../types";
 
 const BASE_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
-export async function createProject(projectData: Project) {
+export const createProject = async (projectData: Project) => {
     const response = await fetch(`${BASE_URL}projects/`, {
         method: 'POST',
         headers: {
@@ -11,21 +11,21 @@ export async function createProject(projectData: Project) {
         body: JSON.stringify(projectData),
     });
     if (!response.ok) {
-        throw new Error('Failed to create project');
+        throw new Error('Failed to create a project');
     }
     return await response.json();
 }
 
-export async function readAllProjects(): Promise<Project[]> {
+export const readAllProjects = async (): Promise<Project[]> => {
     const response = await fetch(`${BASE_URL}projects/`);
     if (!response.ok) {
-        throw new Error('Failed to fetch projects');
+        throw new Error('Failed to read projects');
     }
     const projects: Project[] = await response.json();
     return projects;
 }
 
-export async function updateProject(projectId: string, projectData: Project) {
+export const updateProject = async (projectId: string, projectData: Project) => {
     const response = await fetch(`${BASE_URL}projects/${projectId}`, {
         method: 'PUT',
         headers: {
@@ -34,16 +34,16 @@ export async function updateProject(projectId: string, projectData: Project) {
         body: JSON.stringify(projectData),
     });
     if (!response.ok) {
-        throw new Error(`Failed to update project ${projectId}`);
+        throw new Error(`Failed to update a project ${projectId}`);
     }
     return await response.json();
 }
 
-export async function deleteProject(projectId: string) {
+export const deleteProject = async (projectId: string) => {
     const response = await fetch(`${BASE_URL}projects/${projectId}`, {
         method: 'DELETE',
     });
     if (!response.ok) {
-        throw new Error(`Failed to delete project ${projectId}`);
+        throw new Error(`Failed to delete a project ${projectId}`);
     }
 }

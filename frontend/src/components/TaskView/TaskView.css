@@ -3,9 +3,9 @@
   justify-content: space-between;
   margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid whitesmoke;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: white;
 }
 
 .task-items {
@@ -33,4 +33,9 @@
 .task-action-button {
   margin-right: 10px;
   gap: 24px;
+}
+
+.check-circle-icon {
+  height: 48px;
+  width: 48px;
 }

@@ -1,10 +1,9 @@
-import React from "react";
+import { type FC } from "react";
 import { Task } from "../../types";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, TextField, ListItem } from "@mui/material";
 import { CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import "./TaskView.css";
 
@@ -18,24 +17,7 @@ interface TaskViewProps {
   isTaskRunning: () => Task | undefined;
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    height: "100vh",
-  },
-  clockText: {
-    marginBottom: theme.spacing(2),
-  },
-  icon: {
-    width: 48, // Set the desired width
-    height: 48, // Set the desired height
-  },
-}));
-
-const TaskView: React.FC<TaskViewProps> = ({
+const TaskView: FC<TaskViewProps> = ({
   task,
   handleTaskChange,
   handleTaskUpdate,
@@ -44,24 +26,22 @@ const TaskView: React.FC<TaskViewProps> = ({
   handleTaskStopping,
   isTaskRunning,
 }) => {
-  const classes = useStyles();
-
   const handleStart = () => {
     handleTaskStarting(task);
   };
 
   const handleStop = () => {
-    handleTaskStopping(task.id as string);
+    handleTaskStopping(task.id || "");
   };
 
   return (
     <div className="task-container">
-      <ListItem key={task.id as string} className="task-items">
+      <ListItem key={task.id || ""} className="task-items">
         <TextField
           label="Task Name"
           variant="outlined"
           value={task.name}
-          onChange={(e) => handleTaskChange(task.id as string, e.target.value)}
+          onChange={(e) => handleTaskChange(task.id || "", e.target.value)}
           onBlur={(_) => handleTaskUpdate(task)}
         />
         <Box className="task-info">
@@ -106,17 +86,17 @@ const TaskView: React.FC<TaskViewProps> = ({
             className="task-action-button"
             variant="outlined"
             color="secondary"
-            onClick={() => handleTaskRemove(task.id as string)}
+            onClick={() => handleTaskRemove(task.id || "")}
           >
             Delete
           </Button>
           {task.isRunning ? (
-            <CircularProgress size={48} />
+            <CircularProgress size={32} />
           ) : (
             <CheckCircleIcon
+              className="check-circle-icon"
               color="primary"
               fontSize="large"
-              className={classes.icon}
             />
           )}
         </div>

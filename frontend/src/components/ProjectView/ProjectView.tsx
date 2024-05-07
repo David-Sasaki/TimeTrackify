@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { type FC, useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, TextField, List, ListItem } from "@mui/material";
@@ -25,7 +25,7 @@ interface ProjectViewProps {
   ) => void;
 }
 
-const ProjectView: React.FC<ProjectViewProps> = ({
+const ProjectView: FC<ProjectViewProps> = ({
   project,
   handleTitleChange,
   handleProjectUpdate,
@@ -35,12 +35,12 @@ const ProjectView: React.FC<ProjectViewProps> = ({
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const getAllTasksByProjectId = () => {
-    readAllTasksByProjectId(project.id as string)
+    readAllTasksByProjectId(project.id || "")
       .then((data) => {
         setTasks(data);
       })
       .catch((error) => {
-        console.error("Error read all tasks by projectId:", error);
+        console.error(error);
       });
   };
 
@@ -54,34 +54,27 @@ const ProjectView: React.FC<ProjectViewProps> = ({
         setTasks((prevTasks) => [...prevTasks, response]);
       })
       .catch((error) => {
-        console.error("Error creating task:", error);
+        console.error(error);
       });
   };
 
   const updateName = (taskId: string, newName: string) => {
-    const newTasks = tasks.map((task) => {
-      if (task.id === taskId) {
-        const newTask: Task = {
-          id: task.id,
-          projectId: task.projectId,
-          name: newName,
-          startTime: task.startTime,
-          endTime: task.endTime,
-          totalTime: task.totalTime,
-          isRunning: task.isRunning,
-        };
-        return newTask;
-      } else {
-        return task;
-      }
-    });
-    setTasks(newTasks);
+    const newTasks = [...tasks];
+    const updatedTask = newTasks.find((item) => item.id === taskId);
+    if (updatedTask) {
+      updatedTask.name = newName;
+      setTasks(newTasks);
+    }
   };
 
   const saveTask = (task: Task) => {
-    updateTask(task.id as string, task).catch((error) => {
-      console.error("Error updating task:", error);
-    });
+    updateTask(task.id || "", task)
+      .then(() => {
+        console.log("Successfly saved!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const removeTask = (taskId: string) => {
@@ -90,38 +83,29 @@ const ProjectView: React.FC<ProjectViewProps> = ({
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
       })
       .catch((error) => {
-        console.error("Error deleting task:", error);
+        console.error(error);
       });
   };
 
   const stopTask = (taskId: string) => {
-    const newTasks = tasks.map((task) => {
-      if (task.id === taskId) {
-        const currentTime = formattedDateString();
-        const duration =
-          parseFormattedDateString(currentTime).getTime() -
-          parseFormattedDateString(task.startTime).getTime();
-        handleEndTime(project.id as string, currentTime, duration);
-        const newTask: Task = {
-          id: task.id,
-          projectId: task.projectId,
-          name: task.name,
-          startTime: task.startTime,
-          endTime: currentTime,
-          totalTime: task.totalTime + duration,
-          isRunning: false,
-        };
-        saveTask(newTask);
-        return newTask;
-      } else {
-        return task;
-      }
-    });
-    setTasks(newTasks);
+    const newTasks = [...tasks];
+    const updatedTask = newTasks.find((item) => item.id === taskId);
+    if (updatedTask) {
+      const currentTime = formattedDateString();
+      const duration =
+        parseFormattedDateString(currentTime).getTime() -
+        parseFormattedDateString(updatedTask.startTime).getTime();
+      handleEndTime(project.id || "", currentTime, duration);
+      updatedTask.endTime = currentTime;
+      updatedTask.totalTime += duration;
+      updatedTask.isRunning = false;
+      saveTask(updatedTask);
+      setTasks(newTasks);
+    }
   };
 
   const startTask = (task: Task) => {
-    if (task.isRunning) stopTask(task.id as string);
+    if (task.isRunning) stopTask(task.id || "");
     const newTask: Task = {
       projectId: task.projectId,
       name: task.name,
@@ -136,7 +120,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({
   const handleStart = () => {
     const currentDateString: string = formattedDateString();
     const newTask: Task = {
-      projectId: project.id as string,
+      projectId: project.id || "",
       name: "",
       startTime: currentDateString,
       endTime: "-",
@@ -147,12 +131,12 @@ const ProjectView: React.FC<ProjectViewProps> = ({
   };
 
   const getRunningTaskId = () => {
-    return tasks.find((task) => task.isRunning === true);
+    return tasks.find((task) => task.isRunning);
   };
 
   const handleStop = () => {
     const task = getRunningTaskId();
-    stopTask(task?.id as string);
+    stopTask(task?.id || "");
   };
 
   return (
@@ -163,9 +147,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           label="Project Title"
           variant="outlined"
           value={project.title}
-          onChange={(e) =>
-            handleTitleChange(project.id as string, e.target.value)
-          }
+          onChange={(e) => handleTitleChange(project.id || "", e.target.value)}
           onBlur={(_) => handleProjectUpdate(project)}
         />
         <Box className="project-info">
@@ -209,7 +191,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({
           className="project-action-button"
           variant="outlined"
           color="secondary"
-          onClick={() => handleProjectRemove(project.id as string)}
+          onClick={() => handleProjectRemove(project.id || "")}
         >
           Delete
         </Button>
