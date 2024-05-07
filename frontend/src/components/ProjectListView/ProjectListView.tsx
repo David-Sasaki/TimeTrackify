@@ -8,7 +8,7 @@ import {
   readAllProjects,
   updateProject,
   deleteProject,
-} from "../../api";
+} from "../../helpers/projects.helper";
 import { formattedDateString } from "../../utils";
 import "./ProjectListView.css";
 

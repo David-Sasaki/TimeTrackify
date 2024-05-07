@@ -8,7 +8,7 @@ import {
   readAllTasksByProjectId,
   updateTask,
   deleteTask,
-} from "../../api";
+} from "../../helpers/tasks.helper";
 import { Project, Task } from "../../types";
 import { formattedDateString, parseFormattedDateString } from "../../utils";
 import "./ProjectView.css";
