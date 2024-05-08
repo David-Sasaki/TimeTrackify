@@ -3,7 +3,7 @@ import { Task } from "../../types";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, TextField, ListItem } from "@mui/material";
-import { CircularProgress } from "@material-ui/core";
+import CircularProgress from "@mui/material/CircularProgress";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import "./TaskView.css";
 
